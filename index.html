@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Smoothrun 2.0</title>
+</head>
+
+</a>
+<body>
+<script>
+
+// Select fade-effect below:
+// Set 1 if the background may fade from dark to medium 
+// Set 2 if the background may fade from light to medium 
+// Set 3 if the background may fade from very dark to very light light
+// Set 4 if the background may fade from light to very light
+// Set 5 if the background may fade from dark to very dark 
+var fade_effect=3
+
+// What type of gradient should be applied Internet Explorer 5x or higher?
+// Set "none" or "horizontal" or "vertical"
+var gradient_effect="horizontal"
+
+// Speed higher=slower
+var speed=60
+
+
+
+var browserinfos=navigator.userAgent 
+var ie4=document.all&&!document.getElementById
+var ie5=document.all&&document.getElementById&&!browserinfos.match(/Opera/)
+var ns4=document.layers
+var ns6=document.getElementById&&!document.all
+var opera=browserinfos.match(/Opera/)  
+var browserok=ie4||ie5||ns4||ns6||opera
+
+if (fade_effect==1) {
+	var darkmax=1
+	var lightmax=127
+}
+if (fade_effect==2) {
+	var darkmax=127
+	var lightmax=254
+}
+if (fade_effect==3) {
+	var darkmax=1
+	var lightmax=254
+}
+if (fade_effect==4) {
+	var darkmax=190
+	var lightmax=254
+}
+if (fade_effect==5) {
+	var darkmax=1
+	var lightmax=80
+}
+var hexc = new Array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F')
+
+var newred
+var newgreen
+var newblue
+var oldred
+var oldgreen
+var oldblue
+
+var redcol_1
+var redcol_2 
+var greencol_1 
+var greencol_2 
+var bluecol_1 
+var bluecol_2 
+var oldcolor
+var newcolor
+var firsttime=true
+ 
+var stepred=1
+var stepgreen=1
+var stepblue=1
+
+function setrandomcolor() {
+	var range=(lightmax-darkmax)
+	if (firsttime) {
+		newred=Math.ceil(range*Math.random())+darkmax
+		newgreen=Math.ceil(range*Math.random())+darkmax
+		newblue=Math.ceil(range*Math.random())+darkmax
+		firsttime=false
+	}
+	
+	oldred=Math.ceil(range*Math.random())+darkmax
+	oldgreen=Math.ceil(range*Math.random())+darkmax
+	oldblue=Math.ceil(range*Math.random())+darkmax
+	
+	stepred=newred-oldred
+	if (oldred>newred) {stepred=1}
+	else if (oldred<newred) {stepred=-1}
+	else {stepred=0}
+	
+	stepgreen=newgreen-oldgreen
+	if (oldgreen>newgreen) {stepgreen=1}
+	else if (oldgreen<newgreen) {stepgreen=-1}
+	else {stepgreen=0}
+	
+	stepblue=newblue-oldblue
+	if (oldblue>newblue) {stepblue=1}
+	else if (oldblue<newblue) {stepblue=-1}
+	else {stepblue=0}
+	fadebg()
+}
+
+function fadebg() {
+	if (newred==oldred) {stepred=0}
+	if (newgreen==oldgreen) {stepgreen=0}
+	if (newblue==oldblue) {stepblue=0}
+	newred+=stepred
+	newgreen+=stepgreen
+	newblue+=stepblue
+	
+	if (stepred!=0 || stepgreen!=0 || stepblue!=0) {
+      	redcol_1 = hexc[Math.floor(newred/16)];
+     	redcol_2 = hexc[newred%16];
+	 	greencol_1 = hexc[Math.floor(newgreen/16)];
+      	greencol_2 = hexc[newgreen%16];
+	  	bluecol_1 = hexc[Math.floor(newblue/16)];
+      	bluecol_2 = hexc[newblue%16];
+	  	newcolor="#"+redcol_1+redcol_2+greencol_1+greencol_2+bluecol_1+bluecol_2
+		if (ie5 && gradient_effect!="none") {
+			if (gradient_effect=="horizontal") {gradient_effect=1}
+			if (gradient_effect=="vertical") {gradient_effect=0}
+      		greencol_1 = hexc[Math.floor(newred/16)];
+     		greencol_2 = hexc[newred%16];
+	 		bluecol_1 = hexc[Math.floor(newgreen/16)];
+      		bluecol_2 = hexc[newgreen%16];
+	  		redcol_1 = hexc[Math.floor(newblue/16)];
+      		redcol_2 = hexc[newblue%16];
+			var newcolorCompl="#"+redcol_1+redcol_2+greencol_1+greencol_2+bluecol_1+bluecol_2
+			document.body.style.filter=
+"progid:DXImageTransform.Microsoft.Gradient(startColorstr="+newcolorCompl+", endColorstr="+newcolor+" GradientType="+gradient_effect+")"
+		}
+		else {
+	  		document.bgColor=newcolor 
+		}
+		var timer=setTimeout("fadebg()",speed);
+    } 
+  	else {
+  		clearTimeout(timer)
+		newred=oldred
+		newgreen=oldgreen
+		newblue=oldblue
+		oldcolor=newcolor
+		setrandomcolor()
+  	}
+}
+
+if (browserok) {
+	window.onload=setrandomcolor
+}
+</script>
+<head></head>
+<center><a href="http://www.google.co.uk" target = "_blank"><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Logo_2013_Google.png/251px-Logo_2013_Google.png" width="220" height="82.6" alt="" title="" border="0" /></a><br /><br /><form name="cse" id="google_searchbox" action="https://www.google.co.uk/search">
+  <input name="q" type="text" size="55" value="Google Search" />
+  <input type="submit" name="sa" value="Search" />
+</form></center>
+<br />
+<center><a href="http://www.youtube.com/" target="_blank"><img src="http://www.youtube.com/yt/brand/media/image/yt-brand-standard-logo-630px.png" width="187" height="82.6" alt="" title="" border="0" /></a><br /><br />
+<form name="cse" id="youtube_searchbox" action="http://www.youtube.com/results">
+  <input name="search_query" type="text" size="55" value="YouTube Search" />
+  <input type="submit" name="sa" value="Search" />
+</form><br /><br /><a href="https://vimeo.com/" target="_blank"><img src="https://secure-a.vimeocdn.com/logo.svg" width="187" height="82.6" alt="" title="" border="0" id="vimeo_image" /></a>
+<form name="cse" id="vimeo_searchbox" action="http://vimeo.com/search">
+  <input name="q" type="text" id="vim_box" size="55" value="Vimeo Search" />
+  <input type="submit" value="Search" />
+</form><br /><br /><br /><br /><br />
+<a href="https://dl.dropboxusercontent.com/u/14914674/smoothrun/V1%20build%205%20(Smoothroun%20V1.1)/television.html" target="_blank"><img src="https://dl.dropboxusercontent.com/u/14914674/smoothrun/V1%20build%205%20(Smoothroun%20V1.1)/television.jpg" width="187" height="82.6" alt="" title="" border="0" /></a>      <a href="https://dl.dropboxusercontent.com/u/14914674/smoothrun/V1%20build%205%20(Smoothroun%20V1.1)/mail.html" target="_blank"><img src="https://dl.dropboxusercontent.com/u/14914674/smoothrun/V1%20build%205%20(Smoothroun%20V1.1)/mail%20app.png" width="187" height="82.6" alt="" title="" border="0" /></a>
+<br/>
+<br/>
+<script>
+function hexletters(faf) { if(faf == 0) far = "0"; if(faf == 1) far = "1"; if(faf == 2) far = "2"; if(faf == 3) far = "3"; if(faf == 4) far = "4"; if(faf == 5) far = "5"; if(faf == 6) far = "6"; if(faf == 7) far = "7"; if(faf == 8) far = "8"; if(faf == 9) far = "9"; if(faf == 10) far = "a"; if(faf == 11) far = "b"; if(faf == 12) far = "c"; if(faf == 13) far = "d"; if(faf == 14) far = "e"; if(faf == 15) far = "f"; return far; }
+function getHex(pe) { numg = 0; recg = pe; progressg = pe / 16; while(progressg > 1) { numg += 1; progressg -= 1; } remaing = progressg * 16; numn = hexletters(numg); remainn = hexletters(remaing); return numn + remainn; }
+function getHexF(pe) { numg = 0; recg = pe; progressg = pe / 16; while(progressg > 1) { numg += 1; progressg -= 1; } numn = hexletters(numg); return numn; }
+function vimeologoupdate() { redround = getHexF(newred); greenround = getHexF(newgreen); blueround = getHexF(newblue); var elem = document.getElementById("vimeo_image"); elem.src = "https://secure-a.vimeocdn.com/logo.svg?color="+redround+greenround+blueround; }
+function getvimeologoinfo() { var elem = document.getElementById("vimeo_image"); alert(elem.src); var elem2 = document.getElementById("vim_box"); elem2.value = elem.src; }
+</script>
+</html>
